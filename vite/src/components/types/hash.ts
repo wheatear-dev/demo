@@ -60,7 +60,7 @@ class Hash {
         this.toBytes = toBytes;
     };
 
-    public testForValue(val: string): TestError | undefined {
+    public _testForValue(val: string): TestError | undefined {
         const expected = this.libFunc(val);
         const observed = this.applyRootFunc(val);
 
