@@ -65,8 +65,7 @@ class Hash {
     private getConverters(
         converterProps?: ConverterProps
     ): ConverterProps {
-        const coalescedProps = converterProps ?? defaultConverterProps;
-
+        const coalescedProps = converterProps ?? {};
         return {
             ...defaultConverterProps,
             ...coalescedProps
