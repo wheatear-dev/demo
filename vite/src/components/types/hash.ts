@@ -4,6 +4,7 @@ import Block from './block';
 type HashFunc = (in_: string) => string;
 type StringFunc = (in_: Uint8Array) => string;
 type BytesFunc = (in_: string) => Uint8Array;
+type RootBlock = Block<Uint8Array, Uint8Array>;
 
 interface ConverterProps {
     toString: StringFunc;
@@ -36,14 +37,14 @@ const defaultConverterProps: ConverterProps = {
 
 class Hash {
     name: string;
-    root: Block<Uint8Array, Uint8Array>;
+    root: RootBlock;
     libFunc: HashFunc;
     toString: StringFunc;
     toBytes: BytesFunc;
 
     constructor (
         name: string,
-        root: Block<Uint8Array, Uint8Array>,
+        root: RootBlock,
         libFunc: HashFunc,
         converterProps?: ConverterProps
     ) {
