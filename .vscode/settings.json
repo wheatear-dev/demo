@@ -1,0 +1,3 @@
+{
+    "typescript.tsdk": "./vite/node_modules/typescript/lib"
+  }
