@@ -11,11 +11,6 @@ interface ConverterProps {
     toBytes: BytesFunc;
 };
 
-interface TestError {
-    observed: string;
-    expected: string;
-};
-
 export function defaultStringFunc(in_: Uint8Array): string {
     const split = Array.from(in_);
     const hexSplit = split.map(
@@ -61,16 +56,10 @@ class Hash {
         this.toBytes = toBytes;
     };
 
-    public _testForValue(val: string): TestError | undefined {
-        const expected = this.libFunc(val);
-        const observed = this.applyRootFunc(val);
-
-        if (observed !== expected) {
-            return {
-                observed: observed,
-                expected: expected
-            };
-        };
+    public func(val: string): string {
+        const bytesIn = this.toBytes(val);
+        const bytesOut = this.root.func(bytesIn);
+        return this.toString(bytesOut);
     };
 
     private getConverters(
@@ -82,12 +71,6 @@ class Hash {
             ...defaultConverterProps,
             ...coalescedProps
         };
-    };
-
-    private applyRootFunc(val: string): string {
-        const bytesIn = this.toBytes(val);
-        const bytesOut = this.root.func(bytesIn);
-        return this.toString(bytesOut);
     };
 };
 
