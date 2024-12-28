@@ -23,7 +23,7 @@ test('Identity block returns what its given', () => {
     for (let i = 0; i < 20; i++) {
         for (let j = 0; j < 10; j++ ) {
             const in_ = Math.random().toString(36).slice(2, 2 + i);
-            const expected = identityHash.libFunc(in_);
+            const expected = identityHash.refFunc(in_);
             const observed = identityHash.func(in_);
             expect(expected === observed);
         }

@@ -33,19 +33,19 @@ const defaultConverterProps: ConverterProps = {
 class Hash {
     name: string;
     root: RootBlock;
-    libFunc: HashFunc;
+    refFunc: HashFunc;
     toString: StringFunc;
     toBytes: BytesFunc;
 
     constructor (
         name: string,
         root: RootBlock,
-        libFunc: HashFunc,
+        refFunc: HashFunc,
         converterProps?: ConverterProps
     ) {
         this.name = name;
         this.root = root;
-        this.libFunc = libFunc;
+        this.refFunc = refFunc;
 
         const {
             toString,
