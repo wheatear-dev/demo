@@ -5,12 +5,12 @@ export type Bits = string;
 
 type HashFunc = (in_: string) => string;
 type StringFunc = (in_: Bits) => string;
-type BytesFunc = (in_: string) => Bits;
+type BitsFunc = (in_: string) => Bits;
 type RootBlock = Block<Bits, Bits>;
 
 interface ConverterProps {
     toString: StringFunc;
-    toBytes: BytesFunc;
+    toBits: BitsFunc;
 };
 
 export function defaultStringFunc(in_: Bits): string {
@@ -31,7 +31,7 @@ export function defaultBitsFunc(in_: string): Bits {
 
 const defaultConverterProps: ConverterProps = {
     toString: defaultStringFunc,
-    toBytes: defaultBitsFunc
+    toBits: defaultBitsFunc
 }
 
 
@@ -40,7 +40,7 @@ class Hash {
     root: RootBlock;
     refFunc: HashFunc;
     toString: StringFunc;
-    toBytes: BytesFunc;
+    toBits: BitsFunc;
 
     constructor (
         name: string,
@@ -54,17 +54,17 @@ class Hash {
 
         const {
             toString,
-            toBytes
+            toBits
         } = this.getConverters(converterProps);
 
         this.toString = toString;
-        this.toBytes = toBytes;
+        this.toBits = toBits;
     };
 
     public func(val: string): string {
-        const bytesIn = this.toBytes(val);
-        const bytesOut = this.root.func(bytesIn);
-        return this.toString(bytesOut);
+        const bitsIn = this.toBits(val);
+        const bitsOut = this.root.func(bitsIn);
+        return this.toString(bitsOut);
     };
 
     private getConverters(

@@ -34,7 +34,7 @@ test('Identity block returns what its given', () => {
         identityBlock,
         s => s,
         {
-            toBytes: defaultBitsFunc,
+            toBits: defaultBitsFunc,
             toString: b => decoder.decode(b)
         }
     );
