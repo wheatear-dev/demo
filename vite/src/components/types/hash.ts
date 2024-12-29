@@ -1,32 +1,38 @@
 import Block from './block';
 
 
+export type Bits = string;
+export type Hex = string;
+
 type HashFunc = (in_: string) => string;
-type StringFunc = (in_: Uint8Array) => string;
-type BytesFunc = (in_: string) => Uint8Array;
-type RootBlock = Block<Uint8Array, Uint8Array>;
+type HexFunc = (in_: Bits) => Hex;
+type BitsFunc = (in_: string) => Bits;
+type RootBlock = Block<Bits, Bits>;
 
 interface ConverterProps {
-    toString: StringFunc;
-    toBytes: BytesFunc;
+    toHex: HexFunc;
+    toBits: BitsFunc;
 };
 
-export function defaultStringFunc(in_: Uint8Array): string {
-    const split = Array.from(in_);
-    const hexSplit = split.map(
-        i => i.toString(16).padStart(2, '0')
+export function defaultHexFunc(in_: Bits): string {
+    const split = in_.match(/..../g)
+    const hexSplit = split!.map(
+        s => Number.parseInt(s, 2).toString(16)
     );
     return hexSplit.join('');
 };
 
-export function defaultBytesFunc(in_: string): Uint8Array {
+export function defaultBitsFunc(in_: string): Bits {
     const encoder = new TextEncoder();
-    return encoder.encode(in_);
+    const encoded = encoder.encode(in_);
+    return Array.from(encoded).map(
+        b => b.toString(2).padStart(8, '0')
+    ).join('');
 };
 
 const defaultConverterProps: ConverterProps = {
-    toString: defaultStringFunc,
-    toBytes: defaultBytesFunc
+    toHex: defaultHexFunc,
+    toBits: defaultBitsFunc
 }
 
 
@@ -34,8 +40,8 @@ class Hash {
     name: string;
     root: RootBlock;
     refFunc: HashFunc;
-    toString: StringFunc;
-    toBytes: BytesFunc;
+    toHex: HexFunc;
+    toBits: BitsFunc;
 
     constructor (
         name: string,
@@ -48,18 +54,18 @@ class Hash {
         this.refFunc = refFunc;
 
         const {
-            toString,
-            toBytes
+            toHex: toHex,
+            toBits
         } = this.getConverters(converterProps);
 
-        this.toString = toString;
-        this.toBytes = toBytes;
+        this.toHex = toHex;
+        this.toBits = toBits;
     };
 
     public func(val: string): string {
-        const bytesIn = this.toBytes(val);
-        const bytesOut = this.root.func(bytesIn);
-        return this.toString(bytesOut);
+        const bitsIn = this.toBits(val);
+        const bitsOut = this.root.func(bitsIn);
+        return this.toHex(bitsOut);
     };
 
     private getConverters(
