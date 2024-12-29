@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 
-import { Bits, Block, Hash } from '.';
+import { Bits, Block, Hash, Hex } from '.';
 import { defaultBitsFunc, defaultHexFunc } from './hash';
 import testHash from '../utils/test';
 
@@ -28,14 +28,13 @@ test('Identity block returns what its given', () => {
     };
 
     const identityBlock = new Identity();
-    const decoder = new TextDecoder();
     const identityHash = new Hash(
         'test identity',
         identityBlock,
         s => s,
         {
-            toBits: defaultBitsFunc,
-            toHex: b => decoder.decode(b)
+            toBits: s => s,
+            toHex: s => s
         }
     );
 
