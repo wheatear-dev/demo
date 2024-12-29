@@ -5,14 +5,13 @@ import { defaultBytesFunc } from './hash';
 import testHash from '../utils/test';
 
 
-class Identity extends Block<Uint8Array, Uint8Array> {
-    func(in_: Uint8Array): Uint8Array {
-        return in_;
-    };
-};
-
-
 test('Identity block returns what its given', () => {
+    class Identity extends Block<Uint8Array, Uint8Array> {
+        func(in_: Uint8Array): Uint8Array {
+            return in_;
+        };
+    };
+
     const identityBlock = new Identity();
     const decoder = new TextDecoder();
     const identityHash = new Hash(
