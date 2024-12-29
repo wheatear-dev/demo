@@ -2,18 +2,19 @@ import Block from './block';
 
 
 export type Bits = string;
+export type Hex = string;
 
 type HashFunc = (in_: string) => string;
-type StringFunc = (in_: Bits) => string;
+type HexFunc = (in_: Bits) => Hex;
 type BitsFunc = (in_: string) => Bits;
 type RootBlock = Block<Bits, Bits>;
 
 interface ConverterProps {
-    toString: StringFunc;
+    toHex: HexFunc;
     toBits: BitsFunc;
 };
 
-export function defaultStringFunc(in_: Bits): string {
+export function defaultHexFunc(in_: Bits): string {
     const split = in_.match(/.{1,4}/g)
     const hexSplit = split!.map(
         s => Number.parseInt(s, 2).toString(16)
@@ -30,7 +31,7 @@ export function defaultBitsFunc(in_: string): Bits {
 };
 
 const defaultConverterProps: ConverterProps = {
-    toString: defaultStringFunc,
+    toHex: defaultHexFunc,
     toBits: defaultBitsFunc
 }
 
@@ -39,7 +40,7 @@ class Hash {
     name: string;
     root: RootBlock;
     refFunc: HashFunc;
-    toString: StringFunc;
+    toHex: HexFunc;
     toBits: BitsFunc;
 
     constructor (
@@ -53,18 +54,18 @@ class Hash {
         this.refFunc = refFunc;
 
         const {
-            toString,
+            toHex: toHex,
             toBits
         } = this.getConverters(converterProps);
 
-        this.toString = toString;
+        this.toHex = toHex;
         this.toBits = toBits;
     };
 
     public func(val: string): string {
         const bitsIn = this.toBits(val);
         const bitsOut = this.root.func(bitsIn);
-        return this.toString(bitsOut);
+        return this.toHex(bitsOut);
     };
 
     private getConverters(

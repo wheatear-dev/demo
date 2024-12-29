@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest'
 
 import { Bits, Block, Hash } from '.';
-import { defaultBitsFunc, defaultStringFunc } from './hash';
+import { defaultBitsFunc, defaultHexFunc } from './hash';
 import testHash from '../utils/test';
 
 
@@ -15,7 +15,7 @@ test('defaultStringFunc for simple values', () => {
 
     for (const in_ in expectedMap) {
         const expected = expectedMap[in_];
-        const observed = defaultStringFunc(in_);
+        const observed = defaultHexFunc(in_);
         expect(observed).toEqual(expected);
     };
 });
@@ -35,7 +35,7 @@ test('Identity block returns what its given', () => {
         s => s,
         {
             toBits: defaultBitsFunc,
-            toString: b => decoder.decode(b)
+            toHex: b => decoder.decode(b)
         }
     );
 
