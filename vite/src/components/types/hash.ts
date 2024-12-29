@@ -15,7 +15,7 @@ interface ConverterProps {
 };
 
 export function defaultHexFunc(in_: Bits): string {
-    const split = in_.match(/.{1,4}/g)
+    const split = in_.match(/..../g)
     const hexSplit = split!.map(
         s => Number.parseInt(s, 2).toString(16)
     );
