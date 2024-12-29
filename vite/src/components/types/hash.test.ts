@@ -1,13 +1,28 @@
-import { test } from 'vitest'
+import { expect, test } from 'vitest'
 
-import { Block, Hash } from '.';
-import { defaultBytesFunc } from './hash';
+import { Bits, Block, Hash } from '.';
+import { defaultBitsFunc, defaultStringFunc } from './hash';
 import testHash from '../utils/test';
 
 
+test('defaultStringFunc for simple values', () => {
+    const expectedMap: {[in_: Bits]: string} = {
+        '1111': 'f',
+        '1111111111111110': 'fffe',
+        '000000000001': '001',
+        '1010101000101110': 'aa2e'
+    };
+
+    for (const in_ in expectedMap) {
+        const expected = expectedMap[in_];
+        const observed = defaultStringFunc(in_);
+        expect(observed).toEqual(expected);
+    };
+});
+
 test('Identity block returns what its given', () => {
-    class Identity extends Block<Uint8Array, Uint8Array> {
-        func(in_: Uint8Array): Uint8Array {
+    class Identity extends Block<Bits, Bits> {
+        func(in_: Bits): Bits {
             return in_;
         };
     };
@@ -19,7 +34,7 @@ test('Identity block returns what its given', () => {
         identityBlock,
         s => s,
         {
-            toBytes: defaultBytesFunc,
+            toBytes: defaultBitsFunc,
             toString: b => decoder.decode(b)
         }
     );

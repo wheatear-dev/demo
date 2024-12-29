@@ -12,7 +12,7 @@ function testHash(
             const in_ = Math.random().toString(36).slice(2, 2 + i);
             const expected = hash.refFunc(in_);
             const observed = hash.func(in_);
-            expect(expected === observed);
+            expect(observed).toEqual(expected);
         };
     };
 };
