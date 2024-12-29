@@ -1,7 +1,7 @@
 import { expect, test } from 'vitest'
 
-import { Bits, Block, Hash, Hex } from '.';
-import { defaultBitsFunc, defaultHexFunc } from './hash';
+import { Bits, Block, Hash } from '.';
+import { defaultHexFunc } from './hash';
 import testHash from '../utils/test';
 
 
